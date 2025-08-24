@@ -1,21 +1,18 @@
 <?php
 
 class Database {
-    private $host = 'localhost';
+    private $host = 'aws-1-sa-east-1.pooler.supabase.com';
     private $dbname = 'bancalex';
-    private $user = 'root';
-    private $password = '';
+    private $user = 'postgres.rhwjjuvucewgwhretpbx ';
+    private $password = '123456789Dd*';
+    private $port = 6543;
 
     public $conn;
 
     public function getConnection() {
         if($this->conn === null){
             try{
-                $this->conn = new PDO(
-                    "mysql:host={$this->host};dbname={$this->dbname}",
-                    $this->user,
-                    password: $this->password,
-                );
+                 $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $pass);
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }catch(PDOException $e){
                 die("Error de conexion: " . $e->getMessage());
