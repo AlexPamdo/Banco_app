@@ -1,22 +1,27 @@
 <?php
 
+
 class PagoServices
 {
     private $mainModel;
+    private $usuariosModel;
+    private $pagosModel;
 
-    public function __construct($mainModel)
+    public function __construct($pagosModel, $usuariosModel)
     {
-        $this->mainModel = $mainModel;
+        $this->pagosModel = $pagosModel;
+        $this->usuariosModel = $usuariosModel;
+        $this->mainModel = new Main;
     }
 
-    public function transferir(int $idRemitente, string $cedulaDestinatario, string $telefonoDestinatario, float $monto): array
+    public function transferir(int $idRemitente, string $cedulaDestinatario, string $telefonoDestinatario, float $monto, string $concepto): array
     {
 
         try {
             $this->mainModel->beginTransaction();
 
             //buscamos el remitente
-            $remitente = $this->mainModel->buscarUsuarioId($idRemitente);
+            $remitente = $this->usuariosModel->buscarUsuarioId($idRemitente);
 
             if (!$remitente) {
                 $this->mainModel->rollBack();
@@ -24,7 +29,7 @@ class PagoServices
             }
 
             //Buscamos el destinatario
-            $destinatario = $this->mainModel->verificarUsuario($cedulaDestinatario, $telefonoDestinatario);
+            $destinatario = $this->usuariosModel->verificarUsuario($cedulaDestinatario, $telefonoDestinatario);
             if ($destinatario === null) {
                 $this->mainModel->rollBack();
                 return ["success" => false, "message" => "Destinatario no encontrado"];
@@ -41,15 +46,27 @@ class PagoServices
             }
 
             //actualizamos los saldos
-            if (!$this->mainModel->actualizarSaldo($remitente['id_usuario'], $remitente['saldo'] - $monto) || !$this->mainModel->actualizarSaldo($destinatario['id_usuario'], $destinatario['saldo'] + $monto)) {
+            if (!$this->usuariosModel->actualizarSaldo($remitente['id_usuario'], $remitente['saldo'] - $monto) || !$this->usuariosModel->actualizarSaldo($destinatario['id_usuario'], $destinatario['saldo'] + $monto)) {
                 $this->mainModel->rollBack();
                 return ["success" => false, "message" => "Error al actualizar el saldo"];
             }
 
 
-            //! ESTA FUNCION HAY QUE HACERLA
-            //! 5. Registrar operación
-            //! $this->mainModel->registrarTransferencia($remitente["id_usuario"], $destinatario["id_usuario"], $monto);
+            // 5. Registrar operación
+            $operacion = $this->pagosModel->registrarPago(
+                $idRemitente, 
+                $cedulaDestinatario,  
+                $telefonoDestinatario,
+                $monto,
+                $concepto,
+                date("Y-m-d"),
+                date('H:i:s')
+            );
+
+            if(!$operacion){
+                $this->mainModel->rollBack();
+                return ["success" => false, "message" => "Error al registrar la operacion"];
+            }
 
             //Completamos la tansaccion
             $this->mainModel->commit();
@@ -57,7 +74,8 @@ class PagoServices
             return [
                 "success" => true,
                 "message" => "Transferencia realizada con éxito",
-                "saldo_restante" => $remitente["saldo"] - $monto
+                "saldo_restante" => $remitente["saldo"] - $monto,
+                "operacion" => $operacion,
             ];
 
         } catch (Exception $e) {

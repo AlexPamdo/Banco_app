@@ -45,8 +45,9 @@
             <header id="saldo-info">
                 <h2>Saldo de cuenta corriente</h2>
                 <nav id="saldo-acciones">
-                    <button type="button" class="accion-btn"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                            x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50">
+                    <button type="button" class="accion-btn" id="actualizar-saldo-btn"><svg fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20"
+                            viewBox="0 0 50 50">
                             <path
                                 d="M 25 2 A 2.0002 2.0002 0 1 0 25 6 C 35.517124 6 44 14.482876 44 25 C 44 35.517124 35.517124 44 25 44 C 14.482876 44 6 35.517124 6 25 C 6 19.524201 8.3080175 14.608106 12 11.144531 L 12 15 A 2.0002 2.0002 0 1 0 16 15 L 16 4 L 5 4 A 2.0002 2.0002 0 1 0 5 8 L 9.5253906 8 C 4.9067015 12.20948 2 18.272325 2 25 C 2 37.678876 12.321124 48 25 48 C 37.678876 48 48 37.678876 48 25 C 48 12.321124 37.678876 2 25 2 z">
                             </path>
@@ -69,7 +70,7 @@
 
             <div id="saldo-cantidad">
                 <p>
-                    <output aria-live="polite">$<span id="saldo"><?= $_SESSION["user_info"]["saldo"]; ?></span></output>
+                    <output aria-live="polite"><span id="saldo"><?= $_SESSION["user_info"]["saldo"]; ?></span></output>
                 </p>
             </div>
 
@@ -84,9 +85,20 @@
     <section>
         <div id="transacciones-container">
             <h3>Transacciones recientes</h3>
-            <ul>
-                <p>No hay transacciones recientes.</p>
-            </ul>
+            <table id="transacciones-table" class="">
+                <thead>
+                    <th>Identificador</td>
+                    <th>Destinatario</td>
+                    <th>Monto</td>
+                    <th>Concepto</td>
+                    <th>Hora</td>
+
+                </thead>
+                <tbody id="transacciones-body">
+                    <tr>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
@@ -99,15 +111,18 @@
 <div class="overlay" aria-hidden="false">
 
     <!-- Realizar pago modal -->
-    <div class="modal modal-pago" role="dialog" aria-modal="true" aria-labelledby="realizarPago" aria-describedby="enviarDatos">
+    <div class="modal modal-pago" role="dialog" aria-modal="true" aria-labelledby="realizarPago"
+        aria-describedby="enviarDatos">
         <div class="form-container">
             <div class="modal-info">
                 <h2 id="realizarPago">Realizar pago</h2>
                 <p id="enviarDatos">Ingrese los datos del remitente.</p>
             </div>
 
+
             <form id="pagoForm">
-                <span id="pago-response"></span>
+                <span id="pago-response" class=" response-box">asasas</span>
+
                 <div class="input-container">
                     <label for="cedula" class="input-label">Documento</label>
                     <input type="text" id="cedula" name="cedula" inputmode="numeric" maxlength="12" pattern="^\d{6,12}$"
@@ -123,6 +138,11 @@
                     <label for="monto" class="input-label">Monto</label>
                     <input type="number" name="monto" id="monto" step="0.01" inputmode="decimal"
                         pattern="^\d+(\.\d{1,2})?$" required>
+                </div>
+
+                <div class="input-container">
+                    <label for="monto" class="input-label">Concepto</label>
+                    <input type="text" name="concepto" id="concepto" required>
                 </div>
 
 
@@ -130,56 +150,134 @@
             <div class="form-options">
                 <button type="button" class="form-btn" id="cerrarModalbtn" data-close-modal="modal-pago">Cerrar</button>
                 <button type="reset" class="form-btn" id="limpiarForm">Limpiar</button>
-                <button type="submit" class="form-btn" id="enviarPagoBtn" data-open-modal="modal-confirmar-pago">Continuar</button>
+                <button type="submit" class="form-btn" id="enviarPagoBtn">Continuar</button>
             </div>
         </div>
     </div>
 
     <!-- Confirmar pago modal -->
 
-    <div class="modal modal-confirmar-pago" role="dialog" aria-modal="true" aria-labelledby="realizarPago" aria-describedby="enviarDatos">
+    <div class="modal modal-confirmar-pago" role="dialog" aria-modal="true" aria-labelledby="realizarPago"
+        aria-describedby="enviarDatos">
         <div class="form-container">
             <div class="modal-info">
                 <h2>Confirmar Pago</h2>
                 <p>Revise que todos los datos esten en orden.</p>
             </div>
 
-            <form id="pagoForm">
-                <span id="pago-response"></span>
-                <div class="input-container">
-                    <label for="cedula" class="input-label">Documento</label>
-                    <input type="text" id="cedula" name="cedula" inputmode="numeric" maxlength="12" pattern="^\d{6,12}$"
-                        required>
+            <div class="confirm-info">
+                <div class="span-monto-container">
+                    <span id="confirmar-monto-span" class="span confirm-span" data-span="monto">121212</span>
+                    <span> Bs</span>
                 </div>
 
-                <div class="input-container">
-                    <label for="telefono" class="input-label">Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" inputmode="tel" pattern="^\+?\d{7,15}$" required>
+                <div class="span-container">
+                    <div class="span-confirm-container">
+                        <span class="span-label">Cedula:</span>
+                        <span id="confirmar-cedula-span" class="span confirm-span" data-span="cedula">121212</span>
+                    </div>
+
+                    <div class="span-confirm-container">
+                        <span class="span-label">Telefono:</span>
+                        <span id="confirmar-telefono-span" class="span confirm-span" data-span="telefono">121212</span>
+                    </div>
+
+                    <div class="span-confirm-container">
+                        <span class="span-label">Telefono:</span>
+                        <span id="confirmar-concepto-span" class="span confirm-span" data-span="concepto">121212</span>
+                    </div>
                 </div>
+            </div>
 
-                <div class="input-container">
-                    <label for="monto" class="input-label">Monto</label>
-                    <input type="number" name="monto" id="monto" step="0.01" inputmode="decimal"
-                        pattern="^\d+(\.\d{1,2})?$" required>
-                </div>
-
-
-            </form>
             <div class="form-options">
-                <button type="button" class="form-btn" id="cerrarModalbtn" data-close-modal="modal-confirmar-pago">Atras</button>
+                <button type="button" class="form-btn" id="cerrarModalbtn"
+                    data-close-modal="modal-confirmar-pago">Atras</button>
                 <button type="submit" class="form-btn" id="enviarPagoBtn" form="pagoForm">Pagar</button>
             </div>
         </div>
     </div>
 
+    <!-- Pago finalizado modal-->
 
+    <div class="modal modal-finalizar-pago" role="dialog" aria-modal="true" aria-labelledby="realizarPago"
+        aria-describedby="enviarDatos">
+        <div class="form-container">
+            <div class="modal-info">
+                <h2>Comprovante de la operacion</h2>
+                <p>Pago realizado mediante BANCALEX.</p>
+            </div>
+
+
+            <div class="confirm-info">
+
+                <svg class="icon-finalizado" width="50" height="50" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="#4CAF50" stroke-width="3" />
+                    <path fill="none" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                        d="M6 12l4 4 8-8" />
+                </svg>
+
+                <div class="span-monto-container">
+                    <span id="finalizado-monto-span" class="span pago-finalizado-span " data-span="monto">121212</span>
+                    <span> Bs</span>
+                </div>
+
+                <div class="span-container">
+                    <div class="span-confirm-container">
+                        <span class="span-label">Fecha:</span>
+                        <span id="" class="span pago-finalizado-span " data-span="fecha_pago">121212</span>
+                    </div>
+
+                    <div class="span-confirm-container">
+                        <span class="span-label">Operacion:</span>
+                        <span id="" class="span pago-finalizado-span " data-span="id_pago">121212</span>
+                    </div>
+
+                    <div class="span-confirm-container">
+                        <span class="span-label">Destino:</span>
+                        <span id="" class="span pago-finalizado-span " data-span="cedula_destinatario">121212</span>
+                    </div>
+
+                    <div class="span-confirm-container">
+                        <span class="span-label">Concepto:</span>
+                        <span id="" class="span pago-finalizado-span " data-span="concepto">121212</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-options">
+                <button type="button" class="form-btn" id="cerrarModalbtn"
+                    data-close-modal="modal-finalizar-pago">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="overlay-notificacion">
     <!-- Modal de notificacion-->
-     <div class="modal modal-notificacion">
+    <div class="modal modal-notificacion">
         <div class="notificacion-container">
             <span id="notificacion-icon">?</span>
             <p id="notificacion-text">123123231</p>
         </div>
-     </div>
+    </div>
+
+    <!-- Modal Cargando -->
+    <div class="modal modal-notificacion modal-cargando">
+        <div class="notificacion-container">
+            <span> <svg class="spinner" width="50" height="50" viewBox="0 0 50 50">
+                    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+                </svg></span>
+            <p>Por favor espere...</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- alertas -->
+
+<div id="alerta">
+    <span id="alertaText">Lorem</span>
 </div>
 
 
@@ -203,6 +301,9 @@
         </ul>
     </section>
 </aside>
+
+
+
 
 <!-- Menu -->
 

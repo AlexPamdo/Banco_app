@@ -31,10 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalPago = $(".modal-pago");
     const overlay = $(".overlay");
     const cerrarModalBtn = $("#cerrarModalbtn");
+    const modalConfirmarPago = $(".modal-confirmar-pago");
 
     // --- Notificaciones ---
     const notificaciones = $(".modal-notificacion");
     const notificacionesText = $("#notificacion-text");
+    const notificacionesIcon = $("#notificacion-icon");
+    const cargando = $(".modal-cargando");
 
     // --- Login ---
     const imgLogin1 = $(".img-login-1");
@@ -220,19 +223,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // TODO --- Notificaciones ---
 
-    const notificacion = (tipe, message) => {
 
-        //Cambiamos el mensaje de notificacio
+    const notificacion = (type, message) => {
+        console.log("notificacion llamada con:", { type, message });
+
+        switch (type) {
+            case "success":
+                notificacionesIcon.textContent = "O";
+                break;
+            case "error":
+                notificacionesIcon.textContent = "X";
+                break;
+            default:
+                notificacionesIcon.textContent = "?";
+                break;
+        }
+
         notificacionesText.textContent = message;
 
-        //abrimos el modal de notificaciones
         abrirModal(notificaciones);
+        notificacionVisible = true;
 
         setTimeout(() => {
             cerrarModal(notificaciones);
-        }, 2000)
-    }
+            notificacionVisible = false;
+        }, 1500);
+    };
 
+    
 
     // TODO --- INPUTS (labels que se mantienen arriba) ---
     inputContainers.forEach(container => {
@@ -256,7 +274,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    // --- FORMULARIO ---
+    // TODO --- FORMULARIO ---
+    //Limpiar formulario
     limpiarFormBtn?.addEventListener("click", (e) => {
         lastFocused = document.activeElement;
         pagoForm?.reset();
@@ -265,16 +284,100 @@ document.addEventListener("DOMContentLoaded", () => {
         resetearLabels()
     })
 
-    
+    const confirmarDatos = (dataForm) => {
+
+        // Variable la cual sera devuelta en true si todo esta bien 
+        let todoBien = true
+        let mensaje = ""
+
+        // Regex de los campos a validar
+        const regex = {
+            cedula: /^[0-9]{7,10}$/,
+            telefono: /^\+?[0-9]{7,15}$/,
+            monto: /^\d+(\.\d{1,2})?$/
+        };
+
+        for (let [key, value] of dataForm.entries()) {
+            if (value === '') {
+                mensaje = "Complete todos los campos"
+                todoBien = false;
+                break;
+            }
+
+            if (regex[key] && !regex[key].test(value)) {
+                switch (key) {
+                    case "cedula":
+                        mensaje = "La cedula debe tener entre 7 y 10 digitos";
+                        break;
+                    case "telefono":
+                        mensaje = "Numero de telefono invalido"
+                        break;
+                    case "monto":
+                        mensaje = "Monto invalido";
+                        break;
+                }
+                todoBien = false;
+                break;
+            }
+        }
+
+        //remover la clase de response error si la tiene
+        if (!todoBien) {
+            $("#pago-response").classList.add("response-error");
+            $("#pago-response").textContent = mensaje;
+        } else {
+            setTimeout(() => {
+                $("#pago-response").classList.remove("response-error");
+                $("#pago-response").textContent = "";
+            }, 2000)
+        }
+
+        return todoBien;
+    }
+
+
+    //Confirmar Datos
+    enviarPagoBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const formData = new FormData(pagoForm);
+
+        if (confirmarDatos(formData)) {
+
+            const spans = $$(".confirm-span");
+
+            //mover la informacion al modal de confirmar pago
+            for (let [key, value] of formData.entries()) {
+                spans.forEach(span => {
+                    if (span.dataset.span === key) {
+                        span.textContent = value;
+                    }
+                })
+            }
+
+            abrirModal(modalConfirmarPago);
+        }
+    })
+
+
 
     // TODO --- TRANSFERENCIA ---
 
+    // Mostrar Referencia
+    const monstrarReferencia = ($operacion) => {
+        // Aqui deberia abrirse un modal con la informacion de la referencia obtenida de la tabla de pagos
+    }
+
+    // Finalizar Pago 
     pagoForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const formData = new FormData(pagoForm);
 
         try {
+
+            //Mostramos el modal de cargando
+            notificacion("loading", "cargando");
+
             const res = await fetch("index.php?url=main/realizarPago", {
                 method: "POST",
                 body: formData,
@@ -288,19 +391,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 //cerramos el modal de pago
                 cerrarModal(modalPago);
-
-                notificacion("success", data.message);
-
-                //Limpiar el formulario
+                cerrarModal(modalConfirmarPago);
                 pagoForm?.reset()
+
+                monstrarReferencia(data.operacion);
 
             } else {
 
                 notificacion("error", data.message);
-
             }
         } catch (err) {
             notificacion("error", data.message);
+        } finally {
+            // Ocultamos el modal de cargando
+            cerrarModal(notificaciones)
         }
     })
 

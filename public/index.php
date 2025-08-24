@@ -11,6 +11,9 @@ $url = $_GET['url'] ?? 'main/render';
 //convertimos la url en un array separando mediante '/'
 $urlParts = explode('/' ,$url);
 
+//Guardamos la pagina actual
+$page = $urlParts[0];
+
 //guardamos el nombre del controlador ubicado en la primera parte del array
 $controllerName = ucfirst($urlParts[0]) . 'Controller';
 //Guardamos el metodo ubicado en la segunda parte del array

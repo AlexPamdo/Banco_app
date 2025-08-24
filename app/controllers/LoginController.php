@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../models/Login.php';
+require_once __DIR__ . '/../models/Usuarios.php';
 
 class LoginController
 {
@@ -38,8 +38,8 @@ class LoginController
             exit;
         }
 
-        $loginModel = new Login();
-        $usuario = $loginModel->verificarUsuario($cedula, $contrasena);
+        $usuariosModel = new Usuarios();
+        $usuario = $usuariosModel->verificarUsuarioLogin($cedula, $contrasena);
 
         if ($usuario === false) {
             // Error interno (BD)
@@ -58,7 +58,7 @@ class LoginController
             // Aquí podrías registrar el intento fallido para bloqueo/rate-limit
             echo json_encode([
                 "success" => false,
-                "message" => "Usuario o contraseña incorrectos."
+                "message" => "Usuario o contraseña incorrectos.",
             ]);
             exit;
         }

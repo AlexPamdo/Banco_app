@@ -1,715 +1,855 @@
 /* =========================
    VARIABLES
    ========================= */
-:root {
-  --red: 165, 36, 36;
-  --bg: 230, 230, 230;
-  --card-bg: 245, 245, 245;
-  --text-dark: 48, 48, 48;
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --shadow-soft: 0 2px 5px rgba(0, 0, 0, 0.2);
-  --radius-lg: 30px;
-  --radius-md: 10px;
-  --radius-sm: 1rem;
-  --transition-fast: 200ms ease;
-  --transition-faster: 100ms ease;
-  --fw-strong: 600;
-  --modal-duration: 200ms;
-  --overlay-duration: 260ms;
-  --modal-ease: cubic-bezier(.2, .8, .3, 1);
-}
-
-/* =========================
+   :root {
+    --red: 165, 36, 36;
+    --bg: 230, 230, 230;
+    --card-bg: 245, 245, 245;
+    --text-dark: 48, 48, 48;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-soft: 0 2px 5px rgba(0, 0, 0, 0.2);
+    --radius-lg: 30px;
+    --radius-md: 10px;
+    --radius-sm: 1rem;
+    --transition-fast: 200ms ease;
+    --transition-faster: 100ms ease;
+    --fw-strong: 600;
+    --modal-duration: 200ms;
+    --overlay-duration: 260ms;
+    --modal-ease: cubic-bezier(.2, .8, .3, 1);
+  }
+  
+  /* =========================
      RESET / BASE
      ========================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: rgb(var(--bg));
-  color: rgb(var(--text-dark));
-}
-
-/* =========================
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(var(--bg));
+    color: rgb(var(--text-dark));
+  }
+  
+  /* =========================
      HEADER
      ========================= */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: rgb(var(--red));
-  box-shadow: var(--shadow);
-  color: white;
-}
-
-.header svg {
-  color: white;
-}
-
-/* mantenemos el selector original 'header a' tal como lo tenías */
-header a {
-  color: white;
-}
-
-/* botón en header */
-.header button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 100%;
-  padding: 5px;
-  transition: all var(--transition-fast);
-}
-
-/* usar transform en hover (más consistente) */
-.header button:hover {
-  transform: scale(1.2);
-  background-color: rgba(240, 248, 255, 0.219);
-}
-
-/* =========================
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: rgb(var(--red));
+    box-shadow: var(--shadow);
+    color: white;
+  }
+  
+  .header svg {
+    color: white;
+  }
+  
+  /* mantenemos el selector original 'header a' tal como lo tenías */
+  header a {
+    color: white;
+  }
+  
+  /* botón en header */
+  .header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 100%;
+    padding: 5px;
+    transition: all var(--transition-fast);
+  }
+  
+  /* usar transform en hover (más consistente) */
+  .header button:hover {
+    transform: scale(1.2);
+    background-color: rgba(240, 248, 255, 0.219);
+  }
+  
+  /* =========================
      LAYOUT PRINCIPAL
      ========================= */
-main {
-  height: 90%;
-}
-
-section {
-  display: grid;
-  place-items: center;
-  margin: 2rem;
-}
-
-/* =========================
+  main {
+    height: 90%;
+  }
+  
+  section {
+    display: grid;
+    place-items: center;
+    margin: 2rem;
+  }
+  
+  /* =========================
      SALDO
      ========================= */
-#saldo-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  background-color: rgb(var(--red));
-  box-shadow: var(--shadow-soft);
-
-  color: white;
-  font-size: 30px;
-  font-weight: var(--fw-strong);
-
-  width: 30%;
-  height: 6rem;
-  border-radius: var(--radius-md);
-}
-
-#saldo-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-}
-
-#saldo-acciones {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-
-.accion-btn {
-  background: white;
-  border: none;
-  border-radius: 100%;
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
-}
-
-.button-activo {
-  background-color: rgb(var(--red));
-  color: white;
-}
-
-#saldo-acciones button:hover {
-  background-color: rgba(0, 0, 0, 0.37);
-  transition: all var(--transition-faster);
-  color: white;
-}
-
-#saldo-info h2 {
-  font-size: 15px;
-  font-weight: 600;
-}
-
-#saldo-cantidad {
-  display: flex;
-  justify-content: start;
-  width: 80%;
-}
-
-/* línea utilitaria */
-.linea {
-  border: 1px solid rgb(var(--red));
-}
-
-/* =========================
-     TRANSACCIONES
-     ========================= */
-#transacciones-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgb(var(--card-bg));
-  box-shadow: var(--shadow);
-  width: 60%;
-  height: 40rem;
-  padding: 1rem;
-  border-radius: 5px;
-}
-
-#transacciones-container h3 {
-  color: rgb(66, 66, 66);
-  margin: 1rem;
-}
-
-/* =========================
-     BOTÓN FLOTANTE (REALIZAR PAGO)
-     ========================= */
-#realizar-pago {
-  position: fixed;
-  right: 20px;
-  top: 90%;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background-color: rgb(var(--red));
-  box-shadow: var(--shadow);
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: transform var(--transition-fast);
-}
-
-#realizar-pago:hover {
-  transform: scale(1.1);
-}
-
-/* =========================
-     MODAL DE PAGO
-     ========================= */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  /* no recibe clicks cuando está oculto */
-  transition: opacity var(--overlay-duration) ease;
-  display: block;
-}
-
-.abierto-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -48%) scale(.98);
-  background-color: rgb(238, 238, 238);
-  opacity: 0;
-  pointer-events: none;
-  box-shadow: var(--shadow);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition:
-    transform var(--modal-duration) var(--modal-ease),
-    opacity calc(var(--modal-duration) / 1.2) ease;
-  will-change: transform, opacity;
-}
-
-.modal-pago {
-  height: 50%;
-  width: 30%;
-}
-
-.modal-confirmar-pago{
-  height: 50%;
-  width: 30%;
-}
-
-.modal-notificacion {
-  height: 15%;
-  width: 15%;
-}
-
-.notificacion-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  height: 100%;
-  gap: 2rem;
-  
-}
-
-.abierto-modal {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.modal-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 1rem;
-  padding: 1rem;
-  color: rgb(var(--text-dark));
-  border-bottom: 2px solid rgb(var(--red));
-}
-
-/* FORMULARIO DENTRO DEL MODAL */
-.form-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-}
-
-#pagoForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-/* INPUT CON LABEL FLOTANTE */
-.input-container {
-  position: relative;
-  margin: 15px 0;
-  height: 3rem;
-}
-
-.input-container input {
-  width: 100%;
-  height: 100%;
-  border-radius: 1rem;
-  border: 1px solid #ccc;
-  padding: 0 10px;
-  font-size: 16px;
-  background: white;
-}
-
-.input-container label {
-  position: absolute;
-  top: 15px;
-  left: 16px;
-  font-size: 16px;
-  color: #777;
-  background: white;
-  border-radius: 1rem;
-  padding: 0 4px;
-  pointer-events: none;
-  transition: all 0.18s ease-out;
-}
-
-.input-container input:focus {
-  outline: 1px solid rgb(var(--red));
-}
-
-/* sube el label cuando el input tiene foco o la clase .filled (controlada por JS) */
-.input-container:focus-within label,
-.input-container.filled label {
-  top: -8px;
-  font-size: 12px;
-  color: rgb(var(--red));
-}
-
-/* BOTONES DEL FORM */
-.form-options {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  height: 4rem;
-  padding: 1rem;
-  gap: 1rem;
-  background-color: rgb(197, 197, 197);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-}
-
-.form-btn {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: none;
-  cursor: pointer;
-}
-
-#enviarPagoBtn {
-  background-color: rgb(var(--red));
-  color: white;
-  margin-left: auto;
-  box-shadow: var(--shadow-soft);
-  transition: all var(--transition-fast);
-}
-
-#enviarPagoBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-#limpiarForm {
-  border: 2px solid rgb(54, 54, 54);
-  color: rgb(54, 54, 54);
-  background: none;
-  box-shadow: var(--shadow-soft);
-  transition: all var(--transition-fast);
-}
-
-#limpiarForm:hover {
-  background-color: rgba(0, 0, 0, 0.534);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-#cerrarModalbtn {
-  box-shadow: var(--shadow-soft);
-  transition: all var(--transition-fast);
-}
-
-#cerrarModalbtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* =========================
-     OFFCANVAS
-     ========================= */
-.offcanvas {
-  position: fixed;
-  background-color: rgb(var(--card-bg));
-  box-shadow: var(--shadow);
-  transition: left 0.3s ease, right 0.3s ease;
-  z-index: 1000;
-  top: 0;
-  height: 100%;
-  width: 30%;
-}
-
-.menu {
-  right: -40%;
-}
-
-.notificaciones {
-  left: -40%;
-}
-
-.notificaciones-abierto {
-  left: 0%;
-}
-
-.menu-abierto {
-  right: 0%;
-}
-
-.offcanvas header {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin: 1rem;
-  padding: 0.5rem;
-  border-bottom: 2px solid rgb(var(--red));
-}
-
-.offcanvas header button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  transition: all var(--transition-fast);
-}
-
-.offcanvas header button:hover {
-  background-color: rgba(0, 0, 0, 0.068);
-}
-
-/* =========================
-     MENU
-     ========================= */
-
-#menu-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-}
-
-#user-preview-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 1rem;
-  padding: 1rem;
-}
-
-#user-img {
-  width: 15rem;
-  height: 15rem;
-  border-radius: 50%;
-}
-
-#user-info {
-  text-align: center;
-}
-
-#menu-list {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  width: 100%;
-}
-
-.menu-option {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  gap: 2rem;
-  color: rgb(var(--red));
-  transition: all var(--transition-fast);
-}
-
-.menu-option:hover {
-  color: white;
-  background-color: rgb(var(--red));
-}
-
-
-/* =========================
-     FOOTERs
-     ========================= */
-
-.footer {
-  text-align: center;
-  font-size: 0.85rem;
-  color: #666;
-  padding: 1rem;
-  border-top: 1px solid #ddd;
-  background-color: #f9f9f9;
-}
-
-.footer strong {
-  color: rgb(var(--red));
-}
-
-
-/* =========================
-     LOGIN
-     ========================= */
-
-#main-login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#login-container-info {
-  border-bottom: 2px solid rgb(var(--red));
-  padding-bottom: 5px;
-}
-
-#login-container-info h1 {
-  color: rgb(var(--red));
-  font-weight: 800;
-}
-
-#login-container-info h2 {
-  color: #525252;
-  transition: opacity var(--transition-faster);
-}
-
-#login-container {
-  display: flex;
-  background-color: rgb(255, 255, 255);
-  justify-content: space-between;
-
-  width: 50rem;
-  height: 30rem;
-
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-}
-
-#img-login-container {
-  position: relative;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 10px 0 0 10px;
-}
-
-#img-login-container img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  transition: opacity 0.5s ease;
-}
-
-.hidden {
-  opacity: 0;
-}
-
-#form-login-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 50%;
-  height: 100%;
-  padding: 2rem;
-
-}
-
-#form-login,
-#form-register {
-  transition: opacity 0.5s ease;
-}
-
-.form {
-  display: none;
-}
-
-.form-active {
-  display: block;
-}
-
-.form-button {
-  padding: 0.5rem;
-
-  width: 6rem;
-
-  background-color: rgb(var(--red));
-  color: white;
-
-  border-radius: var(--radius-md);
-  border: none;
-
-  transition: all var(--transition-fast);
-  cursor: pointer;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* transición básica de entrada/salida */
-#form-login-container .extra {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-}
-
-/* cuando esté en modo registro */
-#form-login-container.register .extra {
-  opacity: 1;
-  max-height: 200px;
-  /* suficiente para que se vea completo */
-  transform: translateY(0);
-}
-
-/* título con fade */
-#loginTitle {
-  transition: opacity 0.3s ease;
-}
-
-#loginTitle.hidden {
-  opacity: 0;
-
-}
-
-.response-box {
-  opacity: 0;
-  transition: all 300ms ease;
-}
-
-.response-success {
-  opacity: 1;
-  color: rgb(68, 114, 0);
-}
-
-.response-error {
-  opacity: 1;
-  color: rgb(255, 47, 47);
-}
-
-
-
-
-
-/* =========================
-     MEDIA QUERIES
-     ========================= */
-@media (max-width: 700px) {
   #saldo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  
+    background-color: rgb(var(--red));
+    box-shadow: var(--shadow-soft);
+  
+    color: white;
+    font-size: 30px;
+    font-weight: var(--fw-strong);
+  
+    width: 30%;
+    height: 6rem;
+    border-radius: var(--radius-md);
+  }
+  
+  #saldo-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 90%;
   }
-
+  
+  #saldo-acciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .accion-btn {
+    background: white;
+    border: none;
+    border-radius: 100%;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+  
+  .button-activo {
+    background-color: rgb(var(--red));
+    color: white;
+  }
+  
+  #saldo-acciones button:hover {
+    background-color: rgba(0, 0, 0, 0.37);
+    transition: all var(--transition-faster);
+    color: white;
+  }
+  
+  #saldo-info h2 {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+  #saldo-cantidad {
+    display: flex;
+    justify-content: start;
+    width: 80%;
+  }
+  
+  /* línea utilitaria */
+  .linea {
+    border: 1px solid rgb(var(--red));
+  }
+  
+  /* =========================
+     TRANSACCIONES
+     ========================= */
   #transacciones-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(var(--card-bg));
+    box-shadow: var(--shadow);
+    width: 60%;
+    height: 40rem;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-y: auto;
+    /* scroll vertical */
+  }
+  
+  #transacciones-container h3 {
+    color: rgb(66, 66, 66);
+    margin: 1rem;
+  }
+  
+  #transacciones-table {
     width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+  
+  #transacciones-table th,
+  #transacciones-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  #transacciones-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  #transacciones-table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  #transacciones-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .grupo-fecha {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  /* =========================
+     BOTÓN FLOTANTE (REALIZAR PAGO)
+     ========================= */
+  #realizar-pago {
+    position: fixed;
+    right: 20px;
+    top: 90%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgb(var(--red));
+    box-shadow: var(--shadow);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+  }
+  
+  #realizar-pago:hover {
+    transform: scale(1.1);
+  }
+  
+  /* =========================
+     Alertas
+     ========================= */
+  #alerta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    position: fixed;
+    left: 20px;
+    top: 90%;
+    padding: 1rem;
+  
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  /* =========================
+     MODAL DE PAGO
+     ========================= */
+  .overlay,
+  .overlay-notificacion {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    /* no recibe clicks cuando está oculto */
+    display: block;
+    transition: opacity var(--overlay-duration) ease;
+  }
+  
+  .overlay{
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .abierto-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .modal {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -48%) scale(.98);
+    background-color: rgb(238, 238, 238);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--shadow);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition:
+      transform var(--modal-duration) var(--modal-ease),
+      opacity calc(var(--modal-duration) / 1.2) ease;
+    will-change: transform, opacity;
+  }
+  
+  .modal-pago,
+  .modal-confirmar-pago,
+  .modal-finalizar-pago {
+    height: 60%;
+    width: 30%;
   }
 
+  .icon-finalizado path {
+    color: #2b2b2b;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    animation: drawCheck 0.5s forwards;
+  }
+  
+  @keyframes drawCheck {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  .modal-notificacion {
+    height: 20%;
+    width: 20%;
+  }
+  
+  .notificacion-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    height: 100%;
+  }
+  
+  .notificacion-container span{
+    font-size: 3rem;
+    font-weight: 600;
+  }
+  
+  .notificacion-container p{
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  /* Animacion del spinner */
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+  
+  .spinner .path {
+    stroke: rgb(var(--red));
+    stroke-linecap: round;
+    stroke-dasharray: 90,150;
+    stroke-dashoffset: 0;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  
+  .abierto-modal {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .modal-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 1rem;
+    color: rgb(var(--text-dark));
+    border-bottom: 2px solid rgb(var(--red));
+  }
+  
+  /* FORMULARIO DENTRO DEL MODAL */
+  .form-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  #pagoForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  /* INPUT CON LABEL FLOTANTE */
+  .input-container {
+    position: relative;
+    margin: 15px 0;
+    height: 3rem;
+  }
+  
+  .input-container input {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    border: 1px solid #ccc;
+    padding: 0 10px;
+    font-size: 16px;
+    background: white;
+  }
+  
+  .input-container label {
+    position: absolute;
+    top: 15px;
+    left: 16px;
+    font-size: 16px;
+    color: #777;
+    background: white;
+    border-radius: 1rem;
+    padding: 0 4px;
+    pointer-events: none;
+    transition: all 0.18s ease-out;
+  }
+  
+  .input-container input:focus {
+    outline: 1px solid rgb(var(--red));
+  }
+  
+  /* sube el label cuando el input tiene foco o la clase .filled (controlada por JS) */
+  .input-container:focus-within label,
+  .input-container.filled label {
+    top: -8px;
+    font-size: 12px;
+    color: rgb(var(--red));
+  }
+  
+  /* BOTONES DEL FORM */
+  .form-options {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 4rem;
+    padding: 1rem;
+    gap: 1rem;
+    background-color: rgb(197, 197, 197);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+  
+  .form-btn {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #enviarPagoBtn {
+    background-color: rgb(var(--red));
+    color: white;
+    margin-left: auto;
+    box-shadow: var(--shadow-soft);
+    transition: all var(--transition-fast);
+  }
+  
+  #enviarPagoBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  #limpiarForm {
+    border: 2px solid rgb(54, 54, 54);
+    color: rgb(54, 54, 54);
+    background: none;
+    box-shadow: var(--shadow-soft);
+    transition: all var(--transition-fast);
+  }
+  
+  #limpiarForm:hover {
+    background-color: rgba(0, 0, 0, 0.534);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  #cerrarModalbtn {
+    box-shadow: var(--shadow-soft);
+    transition: all var(--transition-fast);
+  }
+  
+  #cerrarModalbtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* =========================
+     Cofirmar PAgo
+     ========================= */
+  .span-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 1rem
+  }
+  
+  .confirm-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    height: 80%;
+    width: 80%;
+  
+  }
+  
+  .span-monto-container {
+    display: flex;
+    justify-content: center;
+  
+    padding: 1rem;
+    width: 70%;
+    border-radius: 1rem;
+    gap: 0.5rem;
+  
+    font-size: 2rem;
+    font-weight: 600;
+  
+    background-color: white;
+    border: 1px solid #ccc;
+  }
+  
+  .span-confirm-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .span-label {
+    font-weight: 600;
+  }
+  
+  .confirm-span,
+  .pago-finalizado-span {
+    color: #2b2b2b;
+  }
+  
+  /* =========================
+     OFFCANVAS
+     ========================= */
   .offcanvas {
-    width: 100%;
+    position: fixed;
+    background-color: rgb(var(--card-bg));
+    box-shadow: var(--shadow);
+    transition: left 0.3s ease, right 0.3s ease;
+    z-index: 1000;
+    top: 0;
+    height: 100%;
+    width: 30%;
   }
-
+  
   .menu {
-    right: -100%;
+    right: -40%;
   }
-
+  
   .notificaciones {
-    left: -100%;
+    left: -40%;
   }
-
-  .menu-abierto {
-    right: 0%;
-  }
-
+  
   .notificaciones-abierto {
     left: 0%;
   }
-
-
-  .modal {
-    width: 50%;
+  
+  .menu-abierto {
+    right: 0%;
   }
-}
+  
+  .offcanvas header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 1rem;
+    padding: 0.5rem;
+    border-bottom: 2px solid rgb(var(--red));
+  }
+  
+  .offcanvas header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+  }
+  
+  .offcanvas header button:hover {
+    background-color: rgba(0, 0, 0, 0.068);
+  }
+  
+  /* =========================
+     MENU
+     ========================= */
+  #menu-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    width: 100%;
+  }
+  
+  #user-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  #user-img {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+  }
+  
+  #user-info {
+    text-align: center;
+  }
+  
+  #menu-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    width: 100%;
+  }
+  
+  .menu-option {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 2rem;
+    color: rgb(var(--red));
+    transition: all var(--transition-fast);
+  }
+  
+  .menu-option:hover {
+    color: white;
+    background-color: rgb(var(--red));
+  }
+  
+  /* =========================
+     FOOTERs
+     ========================= */
+  .footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  
+  .footer strong {
+    color: rgb(var(--red));
+  }
+  
+  /* =========================
+     LOGIN
+     ========================= */
+  #main-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #login-container-info {
+    border-bottom: 2px solid rgb(var(--red));
+    padding-bottom: 5px;
+  }
+  
+  #login-container-info h1 {
+    color: rgb(var(--red));
+    font-weight: 800;
+  }
+  
+  #login-container-info h2 {
+    color: #525252;
+    transition: opacity var(--transition-faster);
+  }
+  
+  #login-container {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    justify-content: space-between;
+  
+    width: 50rem;
+    height: 30rem;
+  
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+  }
+  
+  #img-login-container {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px 0 0 10px;
+  }
+  
+  #img-login-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+  }
+  
+  .hidden {
+    opacity: 0;
+  }
+  
+  #form-login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+    height: 100%;
+    padding: 2rem;
+  
+  }
+  
+  #form-login,
+  #form-register {
+    transition: opacity 0.5s ease;
+  }
+  
+  .form {
+    display: none;
+  }
+  
+  .form-active {
+    display: block;
+  }
+  
+  .form-button {
+    padding: 0.5rem;
+  
+    width: 6rem;
+  
+    background-color: rgb(var(--red));
+    color: white;
+  
+    border-radius: var(--radius-md);
+    border: none;
+  
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+  
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* transición básica de entrada/salida */
+  #form-login-container .extra {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+  
+  /* cuando esté en modo registro */
+  #form-login-container.register .extra {
+    opacity: 1;
+    max-height: 200px;
+    /* suficiente para que se vea completo */
+    transform: translateY(0);
+  }
+  
+  /* título con fade */
+  #loginTitle {
+    transition: opacity 0.3s ease;
+  }
+  
+  #loginTitle.hidden {
+    opacity: 0;
+  }
+  
+  /* RESPONSE BOX --- para los notificaciones en los formularios*/
+  .response-box {
+    position: fixed;
+    top: 20%;
+    opacity: 0;
+    transition: all 300ms ease;
+  }
+  
+  .response-success {
+    opacity: 1;
+    color: rgb(68, 114, 0);
+  }
+  
+  .response-error {
+    opacity: 1;
+    color: rgb(255, 47, 47);
+  }
+  
+  /* =========================
+     MEDIA QUERIES
+     ========================= */
+  @media (max-width: 700px) {
+    #saldo-container {
+      width: 90%;
+    }
+  
+    #transacciones-container {
+      width: 100%;
+    }
+  
+    .offcanvas {
+      width: 100%;
+    }
+  
+    .menu {
+      right: -100%;
+    }
+  
+    .notificaciones {
+      left: -100%;
+    }
+  
+    .menu-abierto {
+      right: 0%;
+    }
+  
+    .notificaciones-abierto {
+      left: 0%;
+    }
+  
+    .modal {
+      width: 50%;
+    }
+  }
+  

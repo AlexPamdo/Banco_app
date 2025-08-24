@@ -19,7 +19,7 @@
         </p>
     </footer>
 
-    <script src="js/scrip.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
