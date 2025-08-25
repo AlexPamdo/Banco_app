@@ -3,8 +3,8 @@
 session_start();
 
 // Cargar Configuraciones y clasesss
-require_once __DIR__ . '/../app/controllers/LoginController.php';
-require_once __DIR__ . '/../app/controllers/MainController.php';
+require_once __DIR__ . '/app/controllers/LoginController.php';
+require_once __DIR__ . '/app/controllers/MainController.php';
 
 // Capturamso las ruta del la url
 $url = $_GET['url'] ?? 'main/render';
@@ -22,7 +22,7 @@ $method = $urlParts[1] ?? 'render';
 $params = array_slice($urlParts, offset: 2);
 
 // Verificamos si existe el controllador 
-$controllerFile = __DIR__ . "/../app/controllers/{$controllerName}.php";
+$controllerFile = __DIR__ . "/app/controllers/{$controllerName}.php";
 if(!file_exists($controllerFile)){
     die("Controlador {$controllerName} no encontrado en {$controllerFile}");
 }

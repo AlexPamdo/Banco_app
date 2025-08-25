@@ -1,18 +1,18 @@
+<main id="main-login">
 
-
-    <main id="main-login">
-
-        <section id="login-container">
-            <div id="img-login-container">
-                <img class="img-login-1" src="" alt="">
-                <img class="img-login-2" src="" alt="">
+    <section id="login-container">
+        <div id="img-login-container">
+            <img class="img-login-1" src="" alt="">
+            <img class="img-login-2" src="" alt="">
+        </div>
+        <div id="form-login-container">
+            <div id="login-container-info">
+                <h1>BANCALEX</h1>
+                <h2 id="login-title">Iniciar Sesion</h2>
             </div>
-            <div id="form-login-container">
-                <div id="login-container-info">
-                    <h1>BANCALEX</h1>
-                    <h2 id="login-title">Iniciar Sesion</h2>
-                </div>
-                <form id="form-login" class="form form-active" method="post" >
+
+            <div class="login-register-container">
+                <form id="form-login" class="form form-active" method="post">
                     <span id="login-response-box" class="response-box">sss</span>
 
                     <div class="input-container">
@@ -29,7 +29,7 @@
                     <button id="login-btn" class="form-button main" type="submit">Ingresar</button>
 
                 </form>
-                
+
                 <form id="form-register" class="form" action="">
                     <div class="input-container">
                         <label for="cedula" class="input-label">Documento</label>
@@ -54,8 +54,13 @@
 
                     <button id="register-btn" class="form-button " type="submit">Crear Cuenta</button>
                 </form>
-                <p>¿No tienes una cuenta activa? <a id="swich-login" data-mode="register" href="#">¡Crea una aqui!</a></p>
             </div>
-        </section>
+            <div class="create-acount-container">
+                <p id="new-acount-info">¿No tienes una cuenta activa? </p>
+                <a id="switch-login" data-mode="login" data-texto-login="Iniciar Sesión"
+                    data-texto-registro="Crear Cuenta" href="#">¡Crea una aqui!</a>
+            </div>
+        </div>
+    </section>
 
-    </main>
+</main>

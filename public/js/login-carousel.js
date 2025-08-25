@@ -11,7 +11,7 @@ export function initLoginCarousel() {
     const imgLogin1 = $(".img-login-1");
     const imgLogin2 = $(".img-login-2");
 
-    const switchBtn = $("#swich-login");
+    const switchBtn = $("#switch-login");
     const loginTitle = $("#login-title")
 
     const loginForm = $("#form-login")
@@ -20,7 +20,7 @@ export function initLoginCarousel() {
     const loginResponseBox = $("#login-response-box");
 
     //Cambiar Imagenes del login
-    const Imagenes = ["img/img1.jpg", "img/img2.jpg", "img/img3.jpg"]
+    const Imagenes = ["public/img/img1.jpg", "public/img/img2.jpg", "public/img/img3.jpg"]
     let index = 0;
     let showingImg1 = true;
 
@@ -53,8 +53,8 @@ export function initLoginCarousel() {
 
     //Intercambiar Login/register
     switchBtn.addEventListener('click', function (e) {
-        const currentlyRegister = e.currentTarget.dataset.mode === 'register';
-        const newIsRegister = !currentlyRegister;
+        const isRegister = e.currentTarget.dataset.mode === 'register';
+        const newIsRegister = !isRegister;
 
         // Cambiar texto inmediatamente
         loginTitle.textContent = newIsRegister ? 'Crear Cuenta' : 'Iniciar Sesion';
@@ -65,6 +65,15 @@ export function initLoginCarousel() {
 
         // Actualizar dataset
         e.currentTarget.dataset.mode = newIsRegister ? 'register' : 'login';
+
+        // Cambiar también el texto del enlace
+        $("#new-acount-info").textContent = newIsRegister
+            ? "¿Ya tienes una cuenta?"
+            : "¿No tienes una cuenta activa?";
+
+        switchBtn.textContent = newIsRegister
+        ? "¡Inicia sesión aquí!"
+        : "¡Crea una aquí!";
     });
 
     // Login
